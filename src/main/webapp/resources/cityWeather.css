@@ -1,0 +1,38 @@
+body {
+    font-family: Karla, sans-serif;
+    background-color: rgb(240, 239, 231);
+}
+h1 {
+    font-size: larger;
+
+}
+h1 span {
+    color: #f14e32;
+}
+.error-message {
+    width: 500px;
+    height: 200px;
+    white-space: pre;
+    overflow-scrolling: auto;
+    overflow: scroll;
+    display: none;
+    font-size: smaller;
+}
+.error-title {
+    cursor: pointer;
+}
+.error-title:hover {
+    color: gray;
+}
+
+/*
+.clearfix:after {
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+}
+.clearfix {display:inline-block;}
+!* Hide from IE Mac \*!
+.clearfix {display:block;}*/

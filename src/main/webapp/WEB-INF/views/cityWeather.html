@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!-- для корректного отображения русских символов на практике оказался рабочий только такой вариант:
+    1) в конфигурации (SpringConfig) для ThymeleafViewResolver параметр setCharacterEncoding("UTF-8")
+    2) в заголовке в html-файле: meta http-equiv="Content-Type" content="text/html; charset=windows-1251"
+    3) сам файл шаблона HTML после всех правок непосредственно перед деплоем должен быть в windows-1251
+    (IntelliJ Idea после каждой правки пересохраняет в UTF-8, что и нужно исправить)
+-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
+    <title>Weather informer</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="resources/js/cityWeather.js"></script>
+    <link rel="stylesheet" href="resources/cityWeather.css"></linkscript>
+</head>
+<body>
+
+<h1>
+    <span th:text="${meteoInformer.name}"></span>: now the weather in <span th:text="${meteoInformer.city.nameEn}">:</span>
+</h1>
+<span th:if="${meteoInformer.lastError != ''}">
+    <span class="error-title" title="Show error details">Error while requesting the weather service <span th:text="${meteoInformer.name}"></span></span>
+
+    <div class="error-message" th:text="${errorMessage}"></div>
+
+    <hr>
+</span>
+<span th:if="${meteoInformer.lastError == ''}">
+    <p>Current temperature: <span th:text="${meteoData.temperatureDesc}"></span> (feels like <span th:text="${meteoData.feelsLikeDesc}"></span>)</p>
+    <p>Humidity: <span th:text="${meteoData.humidityDesc}"></span></p>
+    <p>Pressure: <span th:text="${meteoData.pressureDesc}"></span></p>
+    <hr>
+    <p>Data received at: <span th:text="${meteoInformer.datetimeQueriedHuman}"></span></p>
+</span>
+
+<input type="hidden" id="queried" th:value="${meteoInformer.datetimeQueried}"/>
+<input type="hidden" id="currInformer" th:value="${meteoInformer.name}"/>
+<input type="hidden" id="currCity" th:value="${cityName}"/>
+
+<form action="/weather" method="post">
+    <select class="form-control" id="city" name="city">
+        <option value="0">select city</option>
+        <option th:each="city : ${cities}" th:value="${city.nameEn}" th:text="${city.nameEn}"></option>
+    </select>
+    <select class="form-control" id="informer" name="informer">
+        <option value="0">select informer</option>
+        <option th:each="informer : ${informers}" th:value="${informer.name}" th:text="${informer.name}"></option>
+    </select>
+    <input type="submit" value="Change">
+</form>
+
+</body>
+</html>
